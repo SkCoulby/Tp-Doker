@@ -1,0 +1,12 @@
+FROM mongo:latest
+
+COPY . /data/db
+
+ENV MONGO_ROOT_PASSWORD=password
+
+RUN set -eux; \
+    mkdir -p /data/configdb; \
+    echo "mongod --port 27017 --dbpath /data/db --replConfigSource /data/configdb --replSet tp5-replica-set" > /data/configdb/mongod.conf; \
+    mongod --port 27017 --dbpath /data/db --replConfigSource /data/configdb --replSet tp5-replica-set &
+
+CMD ["mongod", "--port", "27017", "--dbpath", "/data/db"]

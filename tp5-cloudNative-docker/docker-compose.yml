@@ -1,0 +1,22 @@
+services:
+  mongodb:
+    build: ./mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      MONGO_ROOT_PASSWORD: password
+
+  api:
+    build: ./api
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    volumes:
+      - api-data:/app
+
+volumes:
+  mongodb-data:
+  api-data:
